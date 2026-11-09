@@ -1,0 +1,178 @@
+{
+  "plan": [
+    "切分记录",
+    "抽取可核查事实",
+    "召回组员与术语记忆",
+    "按七节骨架归并",
+    "结构化自检",
+    "渲染 md/docx"
+  ],
+  "steps": [
+    {
+      "type": "action",
+      "tool": "read_notes",
+      "args": [
+        "path"
+      ]
+    },
+    {
+      "type": "observation",
+      "tool": "read_notes",
+      "brief": {
+        "path": "sample_notes.txt",
+        "segment_count": 24,
+        "days": [
+          "周一",
+          "周二",
+          "周三",
+          "周四",
+          "周五",
+          "周末"
+        ]
+      },
+      "error": ""
+    },
+    {
+      "type": "thought",
+      "content": "记录覆盖 6 个时间分组、24 条，先做任务规划"
+    },
+    {
+      "type": "action",
+      "tool": "retrieve_memory",
+      "args": [
+        "memory",
+        "query",
+        "top_k"
+      ]
+    },
+    {
+      "type": "observation",
+      "tool": "retrieve_memory",
+      "brief": {
+        "total": 5
+      },
+      "error": ""
+    },
+    {
+      "type": "action",
+      "tool": "extract_facts",
+      "args": [
+        "segments"
+      ]
+    },
+    {
+      "type": "observation",
+      "tool": "extract_facts",
+      "brief": {
+        "fact_count": 24,
+        "category_stats": {
+          "课程": 5,
+          "论文": 3,
+          "项目": 9,
+          "其他": 2,
+          "实验": 3,
+          "事务": 2
+        }
+      },
+      "error": ""
+    },
+    {
+      "type": "thought",
+      "content": "第 1 轮：抽取到 24 条事实，按七节骨架生成"
+    },
+    {
+      "type": "action",
+      "tool": "check_report",
+      "args": [
+        "report",
+        "facts"
+      ]
+    },
+    {
+      "type": "observation",
+      "tool": "check_report",
+      "brief": {
+        "ok": true,
+        "problem_count": 0,
+        "problems": []
+      },
+      "error": ""
+    },
+    {
+      "type": "thought",
+      "content": "自检结果：通过"
+    },
+    {
+      "type": "action",
+      "tool": "render_report",
+      "args": [
+        "sections",
+        "fmt",
+        "out_dir"
+      ]
+    },
+    {
+      "type": "observation",
+      "tool": "render_report",
+      "brief": {
+        "written": [
+          "out\\weekly_report.md",
+          "out\\weekly_report.docx"
+        ]
+      },
+      "error": ""
+    }
+  ],
+  "tool_calls": [
+    {
+      "tool": "read_notes",
+      "args": {
+        "path": "sample_notes.txt"
+      },
+      "ok": true,
+      "ms": 0.5,
+      "error": ""
+    },
+    {
+      "tool": "retrieve_memory",
+      "args": {
+        "memory": "<dict len=5>",
+        "query": "周一 周二 周三 组员 指标 待办",
+        "top_k": 5
+      },
+      "ok": true,
+      "ms": 0.0,
+      "error": ""
+    },
+    {
+      "tool": "extract_facts",
+      "args": {
+        "segments": "<list len=24>"
+      },
+      "ok": true,
+      "ms": 0.1,
+      "error": ""
+    },
+    {
+      "tool": "check_report",
+      "args": {
+        "report": "<dict len=10>",
+        "facts": "<list len=24>"
+      },
+      "ok": true,
+      "ms": 0.0,
+      "error": ""
+    },
+    {
+      "tool": "render_report",
+      "args": {
+        "sections": "<dict len=10>",
+        "fmt": "md,docx",
+        "out_dir": "out"
+      },
+      "ok": true,
+      "ms": 119.0,
+      "error": ""
+    }
+  ]
+}
